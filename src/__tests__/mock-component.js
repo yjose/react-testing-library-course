@@ -3,9 +3,9 @@ import 'jest-dom/extend-expect'
 import 'react-testing-library/cleanup-after-each'
 
 // 0⃣ 🐨 you'll need these:
-// import React from 'react'
-// import {render, fireEvent} from 'react-testing-library'
-// import {HiddenMessage} from '../hidden-message'
+import React from 'react'
+import {render, fireEvent} from 'react-testing-library'
+import {HiddenMessage} from '../hidden-message'
 
 // Our component uses a react animation library called react-transition-group.
 // By its nature, this library does some interesting things to keep an element
@@ -18,15 +18,24 @@ import 'react-testing-library/cleanup-after-each'
 // `CSSTransition` component from the react-transition-group module. So in
 // our mock module factory function that's all we need to return
 // 7⃣ 🐨 use jest.mock to mock out the react-transition-group component
-// 💯 jest.mock('react-transition-group', () => { /* return the mock object */ })
+jest.mock('react-transition-group', () => {
+  return {
+    CSSTransition: props => (props.in ? props.children : null),
+  }
+})
 // 📖 https://jestjs.io/docs/en/jest-object#jestmockmodulename-factory-options
 
 test('shows hidden message when toggle is clicked', () => {
   // 1⃣ 🐨 render the HiddenMessage component with any message you want
-  //
+  const {getByText, queryByText} = render(
+    <HiddenMessage> Meassage </HiddenMessage>,
+  )
   // 2⃣ 🐨 get the toggle button
   // 💯 (use getByText)
-  //
+  const ToggleButton = getByText(/Toggle/i)
+  expect(queryByText(/Meassage/i)).toBeNull()
+  fireEvent.click(ToggleButton)
+  expect(queryByText(/Meassage/i)).toBeInTheDocument()
   // 3⃣ 🐨 assert that the text you want to render is not in the document
   // 💯 (use `queryByText` and `not.toBeInTheDocument`)
   // 📖 https://github.com/gnapse/jest-dom#tobeinthedocument
@@ -50,8 +59,8 @@ test('shows hidden message when toggle is clicked', () => {
 /*
 http://ws.kcd.im/?ws=react-testing-library-course&e=mock-component&em=
 */
-test.skip('I submitted my elaboration and feedback', () => {
-  const submitted = false // change this when you've submitted!
+test('I submitted my elaboration and feedback', () => {
+  const submitted = true // change this when you've submitted!
   expect(submitted).toBe(true)
 })
 ////////////////////////////////
