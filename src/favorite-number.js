@@ -15,6 +15,7 @@ class FavoriteNumber extends React.Component {
         <label htmlFor="favorite-number">Favorite Number</label>
         <input
           id="favorite-number"
+          data-testid="favorite-number"
           type="number"
           value={number}
           onChange={this.handleChange}

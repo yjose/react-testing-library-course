@@ -1,22 +1,19 @@
 import 'jest-dom/extend-expect'
 import React from 'react'
-// 🐨 remove this import:
-import ReactDOM from 'react-dom'
-// 🐨 remove this import:
-import {getQueriesForElement} from 'dom-testing-library'
+import {render} from 'react-testing-library'
 // 🐨 you'll need to import the render function from 'react-testing-library'
 import {FavoriteNumber} from '../favorite-number'
 
 test('renders a number input with a label "Favorite Number"', () => {
-  // 🐨 remove this div (render will make one for you)
-  const div = document.createElement('div')
-  // 🐨 remove this ReactDOM.render call and use render from react-testing-library instead.
   // 📖 read docs here: https://github.com/kentcdodds/react-testing-library/blob/master/README.md#render
-  ReactDOM.render(<FavoriteNumber />, div)
-  // 🐨 you don't need this anymore, you'll get the getByLabelText function from calling `render`
-  const {getByLabelText} = getQueriesForElement(div)
+  const {getByLabelText, getByText, getByTestId} = render(<FavoriteNumber />)
   const input = getByLabelText(/favorite number/i)
+  const inputWithId = getByTestId(/favorite-number/i)
+  const label = getByText(/favorite number/i)
   expect(input).toHaveAttribute('type', 'number')
+  expect(inputWithId).toHaveAttribute('type', 'number')
+
+  expect(label).toHaveTextContent('Favorite Number')
 })
 
 //////// Elaboration & Feedback /////////
@@ -28,8 +25,8 @@ test('renders a number input with a label "Favorite Number"', () => {
 /*
 http://ws.kcd.im/?ws=react-testing-library-course&e=react-testing-library&em=
 */
-test.skip('I submitted my elaboration and feedback', () => {
-  const submitted = false // change this when you've submitted!
+test('I submitted my elaboration and feedback', () => {
+  const submitted = true // change this when you've submitted!
   expect(submitted).toBe(true)
 })
 ////////////////////////////////
